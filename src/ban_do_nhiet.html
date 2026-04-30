@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Di cư nội địa Việt Nam · Bản đồ tương tác 2014–2024</title>
+
+<!-- Leaflet core CSS + JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #f0f4fa;            /* nền sáng tinh tế */
+  --surface: #ffffff;
+  --card: #ffffff;
+  --border: #e0e8f0;
+  --text: #1f2a44;
+  --muted: #5b6e8c;
+  --gold: #c2410c;          /* cam đất, dễ nhìn */
+  --gold-light: #ea580c;
+  --o-hi: #e65100;
+  --o-mid: #f97316;
+  --o-lo: #ffedd5;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Be Vietnam Pro', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ========== HEADER CENTERED ========== */
+.header {
+  text-align: center;
+  padding: 1.8rem 1rem 0.8rem;
+}
+.header h1 {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: clamp(1.7rem, 5vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.header-rule {
+  width: 56px;
+  height: 2px;
+  background: var(--gold);
+  margin: 0.7rem auto 0;
+}
+.header-sub {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 0.4rem;
+}
+
+/* ===== LAYOUT 2 CỘT : GIẢM TỈ LỆ CAO ===== */
+.dashboard-grid {
+  max-width: 1300px;
+  margin: 0.5rem auto 1.2rem;
+  padding: 0 1.5rem;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 1.8rem;
+  align-items: start;
+}
+
+/* Cột bản đồ */
+.map-col {
+  width: 100%;
+}
+.map-container {
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(30, 45, 74, 0.25);
+  box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.25);
+  background: #03070f;
+  transition: all 0.2s;
+}
+#vietnamMap {
+  height: 480px;
+  width: 100%;
+  background: #cbd5e1;
+}
+/* Responsive: khi màn hẹp, bố cục chồng dọc */
+@media (max-width: 780px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  #vietnamMap {
+    height: 420px;
+  }
+}
+
+/* ========== CỘT THÔNG TIN (BÊN PHẢI) ========== */
+.info-col {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(2px);
+  border-radius: 28px;
+  padding: 1.4rem 1.3rem 1.8rem;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
+}
+
+/* PERIOD TABS (gọn trong info panel) */
+.period-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 1.2rem;
+}
+.tab-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 0.5rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: rgba(255,255,240,0.2);
+}
+.tab-btn:first-child { border-right: none; border-radius: 32px 0 0 32px; }
+.tab-btn:last-child  { border-left: none;  border-radius: 0 32px 32px 0; }
+.tab-btn.active {
+  color: var(--gold);
+  border-color: var(--gold);
+  background: rgba(193, 101, 33, 0.1);
+  font-weight: 700;
+}
+
+/* KPI row (compact) */
+.kpi-row {
+  display: flex;
+  gap: 1.8rem;
+  justify-content: center;
+  margin: 0.6rem 0 0.4rem;
+}
+.kpi {
+  text-align: center;
+  background: rgba(255,255,245,0.6);
+  padding: 0.3rem 0.8rem;
+  border-radius: 48px;
+}
+.kpi-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+.kpi-val.orange { color: var(--o-mid); font-size: 2rem; }
+.kpi-lbl {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-weight: 500;
+}
+.period-desc {
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.45;
+  background: rgba(0,0,0,0.02);
+  padding: 0.6rem 0.8rem;
+  border-radius: 24px;
+  margin: 0.7rem 0 0.9rem;
+}
+.period-desc strong {
+  color: var(--gold);
+}
+
+/* Legend nhỏ gọn trong panel */
+.legend-compact {
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--border);
+}
+.legend-scale {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  background: #fef9f0;
+  padding: 0.5rem 1rem;
+  border-radius: 48px;
+  margin-bottom: 0.5rem;
+}
+.legend-dots {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.legend-circle-sample {
+  border-radius: 50%;
+  background: var(--o-mid);
+}
+.legend-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #3a4a6e;
+}
+.legend-note {
+  font-size: 0.68rem;
+  color: var(--muted);
+  text-align: center;
+  background: #f8fafc;
+  padding: 0.25rem 0.5rem;
+  border-radius: 30px;
+}
+
+/* custom tooltip leaflet */
+.leaflet-tooltip.custom-tooltip {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid #d9e2ef;
+  border-left: 3px solid var(--gold);
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* MODAL (giữ nguyên tính năng) */
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  backdrop-filter: blur(6px);
+}
+.modal-bg.open {
+  opacity: 1;
+  pointer-events: all;
+}
+.modal {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--gold);
+  border-radius: 24px;
+  padding: 1.8rem 1.8rem 1.5rem;
+  max-width: 460px;
+  width: 90%;
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  box-shadow: 0 30px 50px rgba(0,0,0,0.5);
+}
+.modal-bg.open .modal { transform: translateY(0) scale(1); }
+.modal-close {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  width: 28px; height: 28px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.modal-close:hover { border-color: var(--gold); color: var(--gold); }
+.modal-city {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--gold-light);
+}
+.modal-eyebrow {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+.bar-section { margin: 1rem 0; }
+.bar-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-bottom: 0.3rem;
+}
+.bar-meta .bval { font-weight: 600; color: var(--text); }
+.bar-track {
+  height: 10px;
+  background: #eef2f8;
+  border-radius: 20px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, #fbbf24, var(--o-hi));
+  border-radius: 20px;
+  transition: width 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.2);
+}
+.modal-delta {
+  text-align: center;
+  padding: 0.6rem 0 0.3rem;
+  font-size: 1.4rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+}
+.modal-delta.down { color: #e25c48; }
+.modal-delta.up   { color: #2c8c8c; }
+.modal-insight {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: #4a5a7a;
+  border-top: 1px solid var(--border);
+  padding-top: 0.8rem;
+  margin-top: 0.5rem;
+}
+.source-line {
+  text-align: center;
+  padding: 1rem 1rem 1.6rem;
+  font-size: 0.68rem;
+  color: var(--muted);
+  border-top: 1px solid rgba(30,45,74,0.15);
+  max-width: 1100px;
+  margin: 0 auto 0.5rem;
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <h1>Di cư nội địa Việt Nam</h1>
+  <div class="header-rule"></div>
+  <div class="header-sub">Bản đồ tương tác · 2014 – 2024</div>
+</header>
+
+<!-- LƯỚI 2 CỘT: BẢN ĐỒ TRÁI - THÔNG TIN PHẢI, GIẢM CHIỀU CAO TỔNG THỂ -->
+<div class="dashboard-grid">
+  <!-- Cột trái: BẢN ĐỒ (biểu đồ chính) -->
+  <div class="map-col">
+    <div class="map-container">
+      <div id="vietnamMap"></div>
+    </div>
+  </div>
+
+  <!-- Cột phải: CÁC ĐIỀU KHIỂN + DỮ LIỆU -->
+  <div class="info-col">
+    <div class="period-tabs">
+      <button class="tab-btn active" id="tabPeriod0">2014 – 2019</button>
+      <button class="tab-btn" id="tabPeriod1">2019 – 2024</button>
+    </div>
+
+    <div class="kpi-row" id="kpiContainer">
+      <div class="kpi"><div class="kpi-val orange" id="totalMig">0M</div><div class="kpi-lbl">Tổng di cư vào 6 tỉnh</div></div>
+      <div class="kpi" id="trendHint"><div class="kpi-val" id="avgChange">—</div><div class="kpi-lbl">Biến động TB</div></div>
+    </div>
+
+    <div class="period-desc" id="periodDesc">Đang tải dữ liệu...</div>
+
+    <!-- Legend gọn + hướng dẫn trong panel -->
+    <div class="legend-compact">
+      <div class="legend-scale">
+        <span class="legend-label">📊 Quy mô di cư (triệu người)</span>
+        <div class="legend-dots">
+          <div style="width:18px;height:18px;border-radius:50%;background:#ffe0b2;"></div>
+          <span style="font-size:0.7rem;">→</span>
+          <div style="width:34px;height:34px;border-radius:50%;background:#ff9800;"></div>
+          <span style="font-size:0.7rem;">→</span>
+          <div style="width:50px;height:50px;border-radius:50%;background:#e65100;"></div>
+        </div>
+        <span class="legend-label">0.2M &nbsp;→&nbsp; 1.6M</span>
+      </div>
+      <div class="legend-note">
+        🖱️ Di chuột xem nhanh · Nhấn vào vòng tròn để phân tích chi tiết
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class="source-line">
+  Nguồn: <em>"Di cư nội địa Việt Nam giai đoạn 2009–2024"</em> — Tổng cục Thống kê, phân tích xu hướng 2014–2024
+</p>
+
+<!-- MODAL (giữ nguyên cấu trúc) -->
+<div class="modal-bg" id="modalBg" onclick="handleModalBg(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-city" id="mCity"></div>
+    <div class="modal-eyebrow">Biến động người di cư qua hai giai đoạn</div>
+    <div class="bar-section">
+      <div class="bar-meta"><span>Giai đoạn 2014 – 2019</span><span class="bval" id="mV1"></span></div>
+      <div class="bar-track"><div class="bar-fill" id="mBar1"></div></div>
+    </div>
+    <div class="bar-section">
+      <div class="bar-meta"><span>Giai đoạn 2019 – 2024</span><span class="bval" id="mV2"></span></div>
+      <div class="bar-track"><div class="bar-fill" id="mBar2"></div></div>
+    </div>
+    <div class="modal-delta" id="mDelta"></div>
+    <p class="modal-insight" id="mInsight"></p>
+  </div>
+</div>
+
+<script>
+// ======================= DỮ LIỆU 6 TỈNH/THÀNH TRỌNG ĐIỂM =======================
+const PROVINCES = [
+  {
+    id: 'hcm', name: 'TP. Hồ Chí Minh', lat: 10.8231, lon: 106.6297,
+    p1: 1.60, p2: 0.70,
+    insight: 'TP.HCM ghi nhận mức giảm <strong>56%</strong> lượng người di cư. Áp lực hạ tầng, chi phí sinh hoạt leo thang và chính sách kiểm soát dân số khiến dòng người chuyển hướng sang các tỉnh vệ tinh.'
+  },
+  {
+    id: 'hn', name: 'Hà Nội', lat: 21.0285, lon: 105.8542,
+    p1: 0.85, p2: 0.40,
+    insight: 'Hà Nội giảm <strong>53%</strong> nhưng vẫn là cực hút lớn thứ hai. Xu hướng dịch chuyển ra Bắc Ninh, Hưng Yên, Vĩnh Phúc ngày càng rõ nét do quá trình đô thị hóa lan tỏa.'
+  },
+  {
+    id: 'bd', name: 'Bình Dương', lat: 11.0529, lon: 106.6676,
+    p1: 0.70, p2: 0.30,
+    insight: 'Bình Dương – trung tâm công nghiệp phía Nam – giảm <strong>57%</strong>. Các khu công nghiệp mới ở Long An, Tây Ninh đã thu hút một phần dòng lao động.'
+  },
+  {
+    id: 'dn', name: 'Đà Nẵng', lat: 16.0544, lon: 108.2022,
+    p1: 0.50, p2: 0.20,
+    insight: 'Đà Nẵng vẫn là động lực miền Trung song lượng di cư giảm mạnh. Thành phố đang tái cấu trúc kinh tế sau giai đoạn tăng trưởng nóng về du lịch và BĐS.'
+  },
+  {
+    id: 'bn', name: 'Bắc Ninh', lat: 21.1862, lon: 106.0763,
+    p1: 0.30, p2: 0.30,
+    insight: 'Bắc Ninh giữ ổn định <strong>0,3 triệu người</strong> nhờ sức hút bền vững từ các KCN điện tử (Samsung, Canon, Foxconn). Điểm sáng vùng Thủ đô.'
+  },
+  {
+    id: 'dnai', name: 'Đồng Nai', lat: 11.0691, lon: 107.1674,
+    p1: 0.20, p2: 0.20,
+    insight: 'Đồng Nai duy trì mức ổn định <strong>0,2 triệu</strong> cả hai giai đoạn, khẳng định vị thế trung tâm công nghiệp và logistics trọng yếu phía Nam.'
+  }
+];
+
+// Hàm pha màu cam gradient
+function getOrangeColor(value, maxVal) {
+  const t = Math.min(1, value / maxVal);
+  const r1 = 0xff, g1 = 0xe0, b1 = 0xb2;   // #ffe0b2
+  const r2 = 0xe6, g2 = 0x51, b2 = 0x00;   // #e65100
+  const r = Math.round(r1 + t * (r2 - r1));
+  const g = Math.round(g1 + t * (g2 - g1));
+  const b = Math.round(b1 + t * (b2 - b1));
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
+function getRadius(val, maxVal) {
+  const minR = 14, maxR = 52;
+  if (maxVal === 0) return minR;
+  const ratio = val / maxVal;
+  return minR + ratio * (maxR - minR);
+}
+
+let currentPeriod = 0;   // 0 = 2014-2019 (p1), 1 = 2019-2024 (p2)
+let map, markerGroup = null;
+
+// Cập nhật bản đồ, KPI, mô tả
+function updateForPeriod(period) {
+  const dataKey = period === 0 ? 'p1' : 'p2';
+  const values = PROVINCES.map(p => p[dataKey]);
+  const total = values.reduce((a,b) => a + b, 0);
+  const maxVal = Math.max(...values);
+  
+  // Cập nhật KPI tổng
+  document.getElementById('totalMig').innerHTML = total.toFixed(1) + 'M';
+  
+  // Biến động trung bình so sánh giữa 2 kỳ
+  const prevTotal = PROVINCES.reduce((s,p) => s + p.p1, 0);
+  const currTotal = PROVINCES.reduce((s,p) => s + p.p2, 0);
+  let avgChangeText = '';
+  const avgElem = document.getElementById('avgChange');
+  if (period === 0) {
+    avgChangeText = '▲ Giai đoạn cao điểm';
+    avgElem.className = 'kpi-val orange';
+  } else {
+    const pctChange = ((currTotal - prevTotal) / prevTotal * 100).toFixed(0);
+    avgChangeText = pctChange < 0 ? `▼ ${Math.abs(pctChange)}% so với 2014-19` : `+${pctChange}% so với trước`;
+    avgElem.className = 'kpi-val';
+  }
+  document.getElementById('avgChange').innerHTML = avgChangeText;
+  
+  // Mô tả giai đoạn
+  const descElem = document.getElementById('periodDesc');
+  if (period === 0) {
+    descElem.innerHTML = `📈 Đỉnh cao làn sóng di cư — <strong>${total.toFixed(1)} triệu người</strong> đổ vào 6 đô thị lớn, chiếm hơn 55% tổng di cư nội địa toàn quốc. Tăng trưởng nóng tại TP.HCM, Hà Nội, Bình Dương.`;
+  } else {
+    descElem.innerHTML = `🍃 Làn sóng hạ nhiệt — <strong>${total.toFixed(1)} triệu người</strong>, phản ánh áp lực hạ tầng và xu hướng dịch chuyển sang đô thị vệ tinh. Bắc Ninh & Đồng Nai giữ ổn định nhờ sức hút công nghiệp bền vững.`;
+  }
+  
+  // Xóa và vẽ lại marker
+  if (markerGroup) map.removeLayer(markerGroup);
+  markerGroup = L.layerGroup().addTo(map);
+  
+  const periodValues = PROVINCES.map(p => p[dataKey]);
+  const currentMax = Math.max(...periodValues, 0.01);
+  
+  PROVINCES.forEach(prov => {
+    const val = prov[dataKey];
+    const radius = getRadius(val, currentMax);
+    const fillColor = getOrangeColor(val, currentMax);
+    
+    const circle = L.circleMarker([prov.lat, prov.lon], {
+      radius: radius,
+      fillColor: fillColor,
+      color: '#f9a66c',
+      weight: 1.6,
+      opacity: 0.9,
+      fillOpacity: 0.85,
+    });
+    
+    const tooltipContent = `
+      <div style="font-weight:600; font-size:0.9rem; margin-bottom:3px;">${prov.name}</div>
+      <div style="font-size:0.75rem; color:#c2410c;">${val.toFixed(2)} triệu người di cư</div>
+      <div style="font-size:0.65rem; color:#5b6e8c; margin-top:3px;">🔍 Nhấn để xem chi tiết</div>
+    `;
+    circle.bindTooltip(tooltipContent, {
+      permanent: false,
+      direction: 'top',
+      offset: [0, -radius - 3],
+      className: 'custom-tooltip',
+      sticky: true
+    });
+    
+    circle.on('click', () => openModal(prov));
+    circle.addTo(markerGroup);
+    
+    // hiệu ứng nhẹ cho điểm lớn nhất (tạo pulse mờ)
+    if (val === currentMax && currentMax > 0.8) {
+      const pulse = L.circleMarker([prov.lat, prov.lon], {
+        radius: radius + 3,
+        color: fillColor,
+        weight: 1.2,
+        opacity: 0.35,
+        fillOpacity: 0
+      }).addTo(markerGroup);
+    }
+  });
+}
+
+// Khởi tạo bản đồ
+function initMap() {
+  map = L.map('vietnamMap').setView([15.8, 107.5], 6.2);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; CartoDB',
+    subdomains: 'abcd',
+    minZoom: 5,
+    maxZoom: 12,
+  }).addTo(map);
+  map.zoomControl.setPosition('bottomright');
+  markerGroup = L.layerGroup().addTo(map);
+  
+  updateForPeriod(0);
+  
+  // Vì layout mới (2 cột) cần invalidate kích thước để map render chuẩn
+  setTimeout(() => {
+    map.invalidateSize();
+  }, 120);
+  window.addEventListener('resize', () => {
+    if (map) map.invalidateSize();
+  });
+}
+
+// Modal logic
+function openModal(prov) {
+  document.getElementById('mCity').innerHTML = prov.name;
+  document.getElementById('mV1').innerHTML = prov.p1.toFixed(2) + ' triệu người';
+  document.getElementById('mV2').innerHTML = prov.p2.toFixed(2) + ' triệu người';
+  
+  const delta = prov.p2 - prov.p1;
+  const percent = ((delta / prov.p1) * 100).toFixed(0);
+  const deltaSign = delta > 0 ? '▲ +' : delta < 0 ? '▼ ' : '◆ ';
+  const deltaClass = delta > 0 ? 'up' : delta < 0 ? 'down' : 'eq';
+  document.getElementById('mDelta').className = `modal-delta ${deltaClass}`;
+  document.getElementById('mDelta').innerHTML = deltaSign + Math.abs(percent) + '% so với giai đoạn trước';
+  
+  document.getElementById('mInsight').innerHTML = prov.insight;
+  
+  const maxValGlobal = 1.6;
+  document.getElementById('mBar1').style.width = '0%';
+  document.getElementById('mBar2').style.width = '0%';
+  
+  const modalBg = document.getElementById('modalBg');
+  modalBg.classList.add('open');
+  
+  setTimeout(() => {
+    document.getElementById('mBar1').style.width = (prov.p1 / maxValGlobal * 100) + '%';
+    document.getElementById('mBar2').style.width = (prov.p2 / maxValGlobal * 100) + '%';
+  }, 70);
+}
+
+function closeModal() {
+  document.getElementById('modalBg').classList.remove('open');
+}
+function handleModalBg(e) {
+  if (e.target === document.getElementById('modalBg')) closeModal();
+}
+
+// Xử lý chuyển giai đoạn TABS
+function setActiveTab(period) {
+  const tab0 = document.getElementById('tabPeriod0');
+  const tab1 = document.getElementById('tabPeriod1');
+  if (period === 0) {
+    tab0.classList.add('active');
+    tab1.classList.remove('active');
+  } else {
+    tab1.classList.add('active');
+    tab0.classList.remove('active');
+  }
+}
+
+document.getElementById('tabPeriod0').addEventListener('click', () => {
+  if (currentPeriod === 0) return;
+  currentPeriod = 0;
+  setActiveTab(0);
+  updateForPeriod(0);
+  if (map) setTimeout(() => map.invalidateSize(), 60);
+});
+
+document.getElementById('tabPeriod1').addEventListener('click', () => {
+  if (currentPeriod === 1) return;
+  currentPeriod = 1;
+  setActiveTab(1);
+  updateForPeriod(1);
+  if (map) setTimeout(() => map.invalidateSize(), 60);
+});
+
+// Khởi động và đảm bảo map hiển thị tốt
+window.addEventListener('load', () => {
+  initMap();
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Báo chính thống | Công cụ tính năm mua nhà</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f0f2f5;
+      font-family: 'Georgia', 'Times New Roman', 'Segoe UI', serif;
+      padding: 2rem 1.5rem;
+      color: #1e2a33;
+      line-height: 1.5;
+    }
+
+    /* khung chính – phong cách báo chí sang trọng */
+    .financial-card {
+      max-width: 720px;
+      margin: 1rem auto 2rem auto;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+      padding: 2rem 2rem 2rem 2rem;
+      transition: all 0.2s ease;
+    }
+
+    /* tiêu đề chính – báo chí, chân phương nhưng có gu */
+    .title-section {
+      text-align: center;
+      border-bottom: 1px solid #e2e6ea;
+      padding-bottom: 1.2rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .title-section h2 {
+      font-size: 1.9rem;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      color: #1e3a4d;
+      margin-bottom: 0.5rem;
+      font-family: 'Georgia', 'Times New Roman', serif;
+    }
+
+    .title-section .sub {
+      font-size: 0.9rem;
+      color: #6c7a89;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 400;
+    }
+
+    .desc {
+      font-size: 0.95rem;
+      color: #2c3e42;
+      text-align: center;
+      margin-bottom: 2rem;
+      background: #f8fafc;
+      padding: 0.8rem;
+      border-radius: 48px;
+      display: inline-block;
+      width: auto;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* nhóm input đẹp mắt */
+    .input-group {
+      margin-bottom: 1.8rem;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #2c5a6e;
+      margin-bottom: 0.5rem;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      font-size: 1.2rem;
+      font-family: 'Segoe UI', system-ui, monospace;
+      border: 1px solid #cfdde6;
+      border-radius: 14px;
+      background: #fff;
+      transition: 0.2s;
+      color: #1f3b45;
+      font-weight: 500;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: #a1bfcf;
+      box-shadow: 0 0 0 3px rgba(55, 114, 130, 0.1);
+    }
+
+    /* nút bấm – thanh lịch, không quá nổi */
+    .calculate-btn {
+      width: 100%;
+      background: #1e3a4d;
+      color: white;
+      border: none;
+      padding: 1rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.05s;
+      letter-spacing: 0.3px;
+      margin-top: 0.5rem;
+    }
+
+    .calculate-btn:hover {
+      background: #0f2c3b;
+    }
+
+    .calculate-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* kết quả – điểm nhấn tinh tế */
+    .result-box {
+      margin-top: 2rem;
+      background: #fafcfd;
+      border-radius: 24px;
+      padding: 1.4rem 1.2rem;
+      text-align: center;
+      border: 1px solid #e9edf2;
+    }
+
+    .result-number {
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: #1e5a6e;
+      font-family: 'Georgia', monospace;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+
+    .result-label {
+      font-size: 1rem;
+      color: #3b6e85;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 500;
+    }
+
+    .result-note {
+      margin-top: 0.8rem;
+      font-size: 0.85rem;
+      color: #7d8e9b;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 0.8rem;
+    }
+
+    /* footnote – dành cho báo chí */
+    .footnote {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #8f9eb2;
+      margin-top: 1.2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    hr {
+      margin: 1rem 0;
+      border: none;
+      height: 1px;
+      background: linear-gradient(to right, #e0e6ed, transparent);
+    }
+
+    /* responsive */
+    @media (max-width: 640px) {
+      body {
+        padding: 1rem;
+      }
+      .financial-card {
+        padding: 1.5rem;
+      }
+      .title-section h2 {
+        font-size: 1.5rem;
+      }
+      .result-number {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="financial-card">
+  <div class="title-section">
+    <h2>Bao lâu có thể mua nhà?</h2>
+    <div class="sub">Công cụ ước tính tài chính cá nhân</div>
+  </div>
+
+  <div style="text-align: center;">
+    <div class="desc">
+      Dựa trên giá trị căn hộ trung bình tại đô thị lớn (TP. HCM / Hà Nội)
+    </div>
+  </div>
+
+  <div class="input-group">
+    <label>Thu nhập mỗi tháng (VNĐ)</label>
+    <input type="number" id="monthlyIncome" placeholder="Ví dụ: 25.000.000" value="25000000">
+  </div>
+
+  <button class="calculate-btn" id="calcBtn">Tính số năm cần thiết</button>
+
+  <div class="result-box" id="resultArea">
+    <div class="result-label">Thời gian dự kiến</div>
+    <div class="result-number" id="yearsDisplay">— năm</div>
+    <div class="result-note" id="extraNote">
+      Nhập thu nhập tháng và nhấn "Tính toán"
+    </div>
+  </div>
+
+  <hr />
+  <div class="footnote">
+    * Giả định giá căn hộ phổ biến: <strong>4 tỷ đồng</strong> (diện tích ~60-75m² tại khu vực trung tâm mở rộng).<br>
+    Công thức: (giá nhà) / (thu nhập tháng × 12). Chưa bao gồm lãi suất, lạm phát hay tiết kiệm.
+  </div>
+</div>
+
+<script>
+  (function() {
+    // giá căn hộ tham chiếu (4 tỷ VNĐ)
+    const HOUSE_PRICE = 4000000000;
+
+    const salaryInput = document.getElementById('monthlyIncome');
+    const calcBtn = document.getElementById('calcBtn');
+    const yearsDisplaySpan = document.getElementById('yearsDisplay');
+    const extraNoteDiv = document.getElementById('extraNote');
+
+    // Hàm định dạng số kiểu báo chí: 25.000.000
+    function formatCurrency(value) {
+      return value.toLocaleString('vi-VN');
+    }
+
+    function calculateAndRender() {
+      let rawSalary = salaryInput.value.trim();
+      // xóa dấu chấm hoặc khoảng trắng nếu người dùng copy kiểu "25.000.000"
+      let numericSalary = parseFloat(rawSalary.replace(/\./g, '').replace(/,/g, ''));
+      
+      if (isNaN(numericSalary) || numericSalary <= 0) {
+        yearsDisplaySpan.innerHTML = '— năm';
+        extraNoteDiv.innerHTML = 'Vui lòng nhập mức thu nhập hợp lệ (số dương).';
+        return;
+      }
+
+      const yearIncome = numericSalary * 12;
+      const yearsNeeded = HOUSE_PRICE / yearIncome;
+
+      if (yearsNeeded > 100) {
+        yearsDisplaySpan.innerHTML = `> 100 năm`;
+        extraNoteDiv.innerHTML = `Với thu nhập ${formatCurrency(numericSalary)}₫/tháng, rất khó để tích lũy đủ. Cân nhắc cải thiện thu nhập hoặc chọn căn hộ thấp hơn.`;
+      } else {
+        yearsDisplaySpan.innerHTML = `${yearsNeeded.toFixed(1)} năm`;
+        if (yearsNeeded <= 15) {
+          extraNoteDiv.innerHTML = `Thu nhập ${formatCurrency(numericSalary)}₫/tháng — khả thi. Có thể tiếp cận vay ngân hàng hợp lý.`;
+        } else if (yearsNeeded <= 30) {
+          extraNoteDiv.innerHTML = `Với mức thu nhập ${formatCurrency(numericSalary)}₫/tháng, cần lộ trình tài chính rõ ràng trong ${Math.ceil(yearsNeeded)} năm.`;
+        } else {
+          extraNoteDiv.innerHTML = `Thu nhập ${formatCurrency(numericSalary)}₫/tháng — nên xem xét gói vay dài hạn hoặc tích lũy cải thiện thu nhập.`;
+        }
+      }
+    }
+
+    calcBtn.addEventListener('click', calculateAndRender);
+    
+    // cho phép nhấn phím Enter trong ô input
+    salaryInput.addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        calculateAndRender();
+      }
+    });
+
+    // hiển thị kết quả mặc định ban đầu (với giá trị 25tr trong ô input)
+    calculateAndRender();
+  })();
+</script>
+
+</body>
+</html>
