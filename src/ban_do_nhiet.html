@@ -21,13 +21,13 @@
 }
 
 :root {
-  --bg: #f0f4fa;            /* nền sáng tinh tế */
+  --bg: #f0f4fa;
   --surface: #ffffff;
   --card: #ffffff;
   --border: #e0e8f0;
   --text: #1f2a44;
   --muted: #5b6e8c;
-  --gold: #c2410c;          /* cam đất, dễ nhìn */
+  --gold: #c2410c;
   --gold-light: #ea580c;
   --o-hi: #e65100;
   --o-mid: #f97316;
@@ -66,7 +66,7 @@ body {
   margin-top: 0.4rem;
 }
 
-/* ===== LAYOUT 2 CỘT : GIẢM TỈ LỆ CAO ===== */
+/* ===== LAYOUT 2 CỘT ===== */
 .dashboard-grid {
   max-width: 1300px;
   margin: 0.5rem auto 1.2rem;
@@ -77,7 +77,6 @@ body {
   align-items: start;
 }
 
-/* Cột bản đồ */
 .map-col {
   width: 100%;
 }
@@ -95,7 +94,6 @@ body {
   width: 100%;
   background: #cbd5e1;
 }
-/* Responsive: khi màn hẹp, bố cục chồng dọc */
 @media (max-width: 780px) {
   .dashboard-grid {
     grid-template-columns: 1fr;
@@ -106,7 +104,7 @@ body {
   }
 }
 
-/* ========== CỘT THÔNG TIN (BÊN PHẢI) ========== */
+/* ========== CỘT THÔNG TIN ========== */
 .info-col {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(2px);
@@ -116,7 +114,6 @@ body {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
 }
 
-/* PERIOD TABS (gọn trong info panel) */
 .period-tabs {
   display: flex;
   align-items: center;
@@ -145,7 +142,6 @@ body {
   font-weight: 700;
 }
 
-/* KPI row (compact) */
 .kpi-row {
   display: flex;
   gap: 1.8rem;
@@ -186,7 +182,7 @@ body {
   color: var(--gold);
 }
 
-/* Legend nhỏ gọn trong panel */
+/* Legend gọn, trực quan */
 .legend-compact {
   margin-top: 0.6rem;
   padding-top: 0.6rem;
@@ -206,11 +202,9 @@ body {
 .legend-dots {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
-}
-.legend-circle-sample {
-  border-radius: 50%;
-  background: var(--o-mid);
+  margin: 0.2rem 0;
 }
 .legend-label {
   font-size: 0.7rem;
@@ -226,7 +220,7 @@ body {
   border-radius: 30px;
 }
 
-/* custom tooltip leaflet */
+/* custom tooltip */
 .leaflet-tooltip.custom-tooltip {
   background: rgba(255, 255, 255, 0.96);
   border: 1px solid #d9e2ef;
@@ -239,7 +233,30 @@ body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-/* MODAL (giữ nguyên tính năng) */
+/* Style cho label quần đảo */
+.island-label {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0;
+  padding: 0;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #0a4c6e;   /* hoặc màu tối hơn để nổi trên nền biển */
+  text-align: center;
+  line-height: 1.2;
+  white-space: nowrap;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  pointer-events: none;
+  text-shadow: 0 1px 1px white;  /* nhẹ để dễ đọc nếu nền tối */
+}
+.island-label small {
+  font-size: 0.7rem;
+  font-weight: normal;
+  color: #2c6e9e;
+}
+/* MODAL */
 .modal-bg {
   position: fixed;
   inset: 0;
@@ -353,16 +370,15 @@ body {
   <div class="header-sub">Bản đồ tương tác · 2014 – 2024</div>
 </header>
 
-<!-- LƯỚI 2 CỘT: BẢN ĐỒ TRÁI - THÔNG TIN PHẢI, GIẢM CHIỀU CAO TỔNG THỂ -->
 <div class="dashboard-grid">
-  <!-- Cột trái: BẢN ĐỒ (biểu đồ chính) -->
+  <!-- Cột trái: BẢN ĐỒ -->
   <div class="map-col">
     <div class="map-container">
       <div id="vietnamMap"></div>
     </div>
   </div>
 
-  <!-- Cột phải: CÁC ĐIỀU KHIỂN + DỮ LIỆU -->
+  <!-- Cột phải: THÔNG TIN & LEGEND -->
   <div class="info-col">
     <div class="period-tabs">
       <button class="tab-btn active" id="tabPeriod0">2014 – 2019</button>
@@ -376,42 +392,26 @@ body {
 
     <div class="period-desc" id="periodDesc">Đang tải dữ liệu...</div>
 
-    <!-- Legend gọn + hướng dẫn trong panel -->
-    <div class="legend-compact">
-      <div class="legend-scale">
-        <span class="legend-label">📊 Quy mô di cư (triệu người)</span>
-        <div class="legend-dots">
-          <div style="width:18px;height:18px;border-radius:50%;background:#ffe0b2;"></div>
-          <span style="font-size:0.7rem;">→</span>
-          <div style="width:34px;height:34px;border-radius:50%;background:#ff9800;"></div>
-          <span style="font-size:0.7rem;">→</span>
-          <div style="width:50px;height:50px;border-radius:50%;background:#e65100;"></div>
-        </div>
-        <span class="legend-label">0.2M &nbsp;→&nbsp; 1.6M</span>
-      </div>
-      <div class="legend-note">
-        🖱️ Di chuột xem nhanh · Nhấn vào vòng tròn để phân tích chi tiết
-      </div>
-    </div>
   </div>
 </div>
 
 <p class="source-line">
-  Nguồn: <em>"Di cư nội địa Việt Nam giai đoạn 2009–2024"</em> — Tổng cục Thống kê, phân tích xu hướng 2014–2024
+  Nguồn: <em>"Di cư nội địa Việt Nam giai đoạn 2009–2024"</em> — Tổng cục Thống kê, phân tích xu hướng 2014–2024<br>
+  <span style="opacity:0.7;">Giai đoạn 2014–2019: 3,8 triệu người đến 6 đô thị trọng điểm, chiếm 59% tổng di cư nội địa. Giai đoạn 2019–2024: 1,8 triệu người, chiếm 51%.</span>
 </p>
 
-<!-- MODAL (giữ nguyên cấu trúc) -->
+<!-- MODAL CHI TIẾT -->
 <div class="modal-bg" id="modalBg" onclick="handleModalBg(event)">
   <div class="modal" id="modal">
     <button class="modal-close" onclick="closeModal()">✕</button>
     <div class="modal-city" id="mCity"></div>
     <div class="modal-eyebrow">Biến động người di cư qua hai giai đoạn</div>
     <div class="bar-section">
-      <div class="bar-meta"><span>Giai đoạn 2014 – 2019</span><span class="bval" id="mV1"></span></div>
+      <div class="bar-meta"><span>2014 – 2019</span><span class="bval" id="mV1"></span></div>
       <div class="bar-track"><div class="bar-fill" id="mBar1"></div></div>
     </div>
     <div class="bar-section">
-      <div class="bar-meta"><span>Giai đoạn 2019 – 2024</span><span class="bval" id="mV2"></span></div>
+      <div class="bar-meta"><span>2019 – 2024</span><span class="bval" id="mV2"></span></div>
       <div class="bar-track"><div class="bar-fill" id="mBar2"></div></div>
     </div>
     <div class="modal-delta" id="mDelta"></div>
@@ -424,28 +424,28 @@ body {
 const PROVINCES = [
   {
     id: 'hcm', name: 'TP. Hồ Chí Minh', lat: 10.8231, lon: 106.6297,
-    p1: 1.60, p2: 0.70,
-    insight: 'TP.HCM ghi nhận mức giảm <strong>56%</strong> lượng người di cư. Áp lực hạ tầng, chi phí sinh hoạt leo thang và chính sách kiểm soát dân số khiến dòng người chuyển hướng sang các tỉnh vệ tinh.'
+    p1: 1.50, p2: 0.60,
+    insight: 'TP.HCM ghi nhận mức giảm <strong>60%</strong> lượng người di cư (từ 1,5 xuống 0,6 triệu). Áp lực hạ tầng, chi phí sinh hoạt leo thang và chính sách kiểm soát dân số khiến dòng người chuyển hướng sang các tỉnh vệ tinh.'
   },
   {
     id: 'hn', name: 'Hà Nội', lat: 21.0285, lon: 105.8542,
-    p1: 0.85, p2: 0.40,
-    insight: 'Hà Nội giảm <strong>53%</strong> nhưng vẫn là cực hút lớn thứ hai. Xu hướng dịch chuyển ra Bắc Ninh, Hưng Yên, Vĩnh Phúc ngày càng rõ nét do quá trình đô thị hóa lan tỏa.'
+    p1: 0.80, p2: 0.35,
+    insight: 'Hà Nội giảm <strong>56%</strong> (0,8 → 0,35 triệu) nhưng vẫn là cực hút lớn thứ hai. Xu hướng dịch chuyển ra Bắc Ninh, Hưng Yên, Vĩnh Phúc ngày càng rõ nét do quá trình đô thị hóa lan tỏa.'
   },
   {
     id: 'bd', name: 'Bình Dương', lat: 11.0529, lon: 106.6676,
-    p1: 0.70, p2: 0.30,
-    insight: 'Bình Dương – trung tâm công nghiệp phía Nam – giảm <strong>57%</strong>. Các khu công nghiệp mới ở Long An, Tây Ninh đã thu hút một phần dòng lao động.'
+    p1: 0.60, p2: 0.20,
+    insight: 'Bình Dương – trung tâm công nghiệp phía Nam – giảm <strong>67%</strong> (0,6 → 0,2 triệu). Các khu công nghiệp mới ở Long An, Tây Ninh đã thu hút một phần dòng lao động thay thế.'
   },
   {
     id: 'dn', name: 'Đà Nẵng', lat: 16.0544, lon: 108.2022,
-    p1: 0.50, p2: 0.20,
-    insight: 'Đà Nẵng vẫn là động lực miền Trung song lượng di cư giảm mạnh. Thành phố đang tái cấu trúc kinh tế sau giai đoạn tăng trưởng nóng về du lịch và BĐS.'
+    p1: 0.40, p2: 0.15,
+    insight: 'Đà Nẵng vẫn là động lực miền Trung song lượng di cư giảm mạnh (<strong>62,5%</strong>). Thành phố đang tái cấu trúc kinh tế sau giai đoạn tăng trưởng nóng về du lịch và BĐS.'
   },
   {
     id: 'bn', name: 'Bắc Ninh', lat: 21.1862, lon: 106.0763,
     p1: 0.30, p2: 0.30,
-    insight: 'Bắc Ninh giữ ổn định <strong>0,3 triệu người</strong> nhờ sức hút bền vững từ các KCN điện tử (Samsung, Canon, Foxconn). Điểm sáng vùng Thủ đô.'
+    insight: 'Bắc Ninh giữ ổn định <strong>0,3 triệu người</strong> nhờ sức hút bền vững từ các KCN điện tử (Samsung, Canon, Foxconn). Điểm sáng vùng Thủ đô, không suy giảm qua hai kỳ.'
   },
   {
     id: 'dnai', name: 'Đồng Nai', lat: 11.0691, lon: 107.1674,
@@ -454,11 +454,11 @@ const PROVINCES = [
   }
 ];
 
-// Hàm pha màu cam gradient
+// Hàm màu cam gradient dựa trên giá trị
 function getOrangeColor(value, maxVal) {
   const t = Math.min(1, value / maxVal);
-  const r1 = 0xff, g1 = 0xe0, b1 = 0xb2;   // #ffe0b2
-  const r2 = 0xe6, g2 = 0x51, b2 = 0x00;   // #e65100
+  const r1 = 0xff, g1 = 0xe0, b1 = 0xb2;
+  const r2 = 0xe6, g2 = 0x51, b2 = 0x00;
   const r = Math.round(r1 + t * (r2 - r1));
   const g = Math.round(g1 + t * (g2 - g1));
   const b = Math.round(b1 + t * (b2 - b1));
@@ -472,20 +472,92 @@ function getRadius(val, maxVal) {
   return minR + ratio * (maxR - minR);
 }
 
-let currentPeriod = 0;   // 0 = 2014-2019 (p1), 1 = 2019-2024 (p2)
+let currentPeriod = 0;
 let map, markerGroup = null;
+let islandLayer = null;  // layer riêng cho quần đảo
 
-// Cập nhật bản đồ, KPI, mô tả
+// Hàm bổ sung các chấm đảo và tên quần đảo Hoàng Sa, Trường Sa
+function addIslandMarkers(mapInstance) {
+  if (islandLayer) mapInstance.removeLayer(islandLayer);
+  islandLayer = L.layerGroup().addTo(mapInstance);
+  
+  // --- Quần đảo Hoàng Sa (Paracel) ~ 16.8°N, 112.3°E với nhiều chấm nhỏ ---
+  const hoangSaCenter = [16.85, 112.35];
+  const hoangSaOffsets = [
+    [0, 0],        // chính tâm
+    [0.15, -0.12], [0.08, 0.18], [-0.12, 0.07], [-0.07, -0.14],
+    [0.22, 0.05], [-0.20, 0.10], [0.05, -0.22], [0.28, -0.06], [-0.18, -0.18]
+  ];
+  hoangSaOffsets.forEach(offset => {
+    const lat = hoangSaCenter[0] + offset[0];
+    const lng = hoangSaCenter[1] + offset[1];
+    L.circleMarker([lat, lng], {
+      radius: 4,
+      fillColor: '#1e88e5',
+      color: '#0d47a1',
+      weight: 1,
+      opacity: 0.9,
+      fillOpacity: 0.75
+    }).addTo(islandLayer);
+  });
+  
+  // Label Hoàng Sa (xuống dòng)
+  const hsLabelHtml = '<div style="white-space: nowrap;">Quần đảo Hoàng Sa<br><span style="font-size:0.7rem;">(Việt Nam)</span></div>';
+  const hsIcon = L.divIcon({
+    className: 'island-label',
+    html: hsLabelHtml,
+    iconSize: [130, 42],
+    popupAnchor: [0, -20]
+  });
+  L.marker([hoangSaCenter[0] + 0.25, hoangSaCenter[1] - 0.15], {
+    icon: hsIcon,
+    interactive: false
+  }).addTo(islandLayer);
+  
+  // --- Quần đảo Trường Sa (Spratly) ~ 9.2°N, 113.8°E với nhiều chấm trải rộng ---
+  const truongSaCenter = [9.25, 113.85];
+  const truongSaOffsets = [
+    [0, 0],
+    [0.18, -0.14], [-0.12, 0.20], [0.25, 0.10], [-0.22, -0.08],
+    [0.05, 0.28], [-0.30, 0.05], [0.14, -0.24], [-0.08, -0.20], [0.32, -0.05],
+    [-0.18, 0.22], [0.10, -0.32], [-0.28, -0.18]
+  ];
+  truongSaOffsets.forEach(offset => {
+    const lat = truongSaCenter[0] + offset[0];
+    const lng = truongSaCenter[1] + offset[1];
+    L.circleMarker([lat, lng], {
+      radius: 4.2,
+      fillColor: '#1e88e5',
+      color: '#0d47a1',
+      weight: 1,
+      opacity: 0.9,
+      fillOpacity: 0.7
+    }).addTo(islandLayer);
+  });
+  
+  // Label Trường Sa
+  const tsLabelHtml = '<div style="white-space: nowrap;">Quần đảo Trường Sa<br><span style="font-size:0.7rem;">(Việt Nam)</span></div>';
+  const tsIcon = L.divIcon({
+    className: 'island-label',
+    html: tsLabelHtml,
+    iconSize: [130, 42],
+    popupAnchor: [0, -20]
+  });
+  L.marker([truongSaCenter[0] + 0.28, truongSaCenter[1] - 0.22], {
+    icon: tsIcon,
+    interactive: false
+  }).addTo(islandLayer);
+}
+
+// Cập nhật toàn bộ giao diện theo giai đoạn
 function updateForPeriod(period) {
   const dataKey = period === 0 ? 'p1' : 'p2';
   const values = PROVINCES.map(p => p[dataKey]);
   const total = values.reduce((a,b) => a + b, 0);
   const maxVal = Math.max(...values);
   
-  // Cập nhật KPI tổng
   document.getElementById('totalMig').innerHTML = total.toFixed(1) + 'M';
   
-  // Biến động trung bình so sánh giữa 2 kỳ
   const prevTotal = PROVINCES.reduce((s,p) => s + p.p1, 0);
   const currTotal = PROVINCES.reduce((s,p) => s + p.p2, 0);
   let avgChangeText = '';
@@ -500,15 +572,13 @@ function updateForPeriod(period) {
   }
   document.getElementById('avgChange').innerHTML = avgChangeText;
   
-  // Mô tả giai đoạn
   const descElem = document.getElementById('periodDesc');
   if (period === 0) {
-    descElem.innerHTML = `📈 Đỉnh cao làn sóng di cư — <strong>${total.toFixed(1)} triệu người</strong> đổ vào 6 đô thị lớn, chiếm hơn 55% tổng di cư nội địa toàn quốc. Tăng trưởng nóng tại TP.HCM, Hà Nội, Bình Dương.`;
+    descElem.innerHTML = `2014 – 2019: <strong>đỉnh cao di cư</strong> - 3,8 triệu người đổ vào 6 đô thị lớn, chiếm <strong>59%</strong> tổng di cư nội địa toàn quốc. Tăng trưởng nóng tại TP.HCM, Hà Nội, Bình Dương.`;
   } else {
-    descElem.innerHTML = `🍃 Làn sóng hạ nhiệt — <strong>${total.toFixed(1)} triệu người</strong>, phản ánh áp lực hạ tầng và xu hướng dịch chuyển sang đô thị vệ tinh. Bắc Ninh & Đồng Nai giữ ổn định nhờ sức hút công nghiệp bền vững.`;
+    descElem.innerHTML = `2019 – 2024: <strong>làn sóng hạ nhiệt rõ rệt</strong> - 1,8 triệu người, chiếm <strong>51%</strong> tổng di cư. Phản ánh áp lực hạ tầng, chi phí đắt đỏ và sự dịch chuyển sang đô thị vệ tinh. Bắc Ninh & Đồng Nai giữ ổn định nhờ sức hút công nghiệp.`;
   }
   
-  // Xóa và vẽ lại marker
   if (markerGroup) map.removeLayer(markerGroup);
   markerGroup = L.layerGroup().addTo(map);
   
@@ -545,8 +615,7 @@ function updateForPeriod(period) {
     circle.on('click', () => openModal(prov));
     circle.addTo(markerGroup);
     
-    // hiệu ứng nhẹ cho điểm lớn nhất (tạo pulse mờ)
-    if (val === currentMax && currentMax > 0.8) {
+    if (val === currentMax && currentMax > 0.6) {
       const pulse = L.circleMarker([prov.lat, prov.lon], {
         radius: radius + 3,
         color: fillColor,
@@ -558,7 +627,7 @@ function updateForPeriod(period) {
   });
 }
 
-// Khởi tạo bản đồ
+// Khởi tạo bản đồ chính
 function initMap() {
   map = L.map('vietnamMap').setView([15.8, 107.5], 6.2);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
@@ -572,7 +641,9 @@ function initMap() {
   
   updateForPeriod(0);
   
-  // Vì layout mới (2 cột) cần invalidate kích thước để map render chuẩn
+  // Thêm các chấm đảo và tên quần đảo sau khi map đã sẵn sàng
+  addIslandMarkers(map);
+  
   setTimeout(() => {
     map.invalidateSize();
   }, 120);
@@ -616,7 +687,7 @@ function handleModalBg(e) {
   if (e.target === document.getElementById('modalBg')) closeModal();
 }
 
-// Xử lý chuyển giai đoạn TABS
+// Chuyển giai đoạn
 function setActiveTab(period) {
   const tab0 = document.getElementById('tabPeriod0');
   const tab1 = document.getElementById('tabPeriod1');
@@ -645,7 +716,6 @@ document.getElementById('tabPeriod1').addEventListener('click', () => {
   if (map) setTimeout(() => map.invalidateSize(), 60);
 });
 
-// Khởi động và đảm bảo map hiển thị tốt
 window.addEventListener('load', () => {
   initMap();
   document.addEventListener('keydown', (e) => {

@@ -16,184 +16,122 @@
       font-family: 'Georgia', 'Times New Roman', 'Segoe UI', serif;
       padding: 2rem 1.5rem;
       color: #1e2a33;
-      line-height: 1.5;
+      line-height: 1.4;
     }
 
-    /* khung chính – phong cách báo chí sang trọng */
+    /* khung chính – gọn hơn */
     .financial-card {
-      max-width: 720px;
-      margin: 1rem auto 2rem auto;
+      max-width: 620px;
+      margin: 2rem auto;
       background: #ffffff;
-      border-radius: 20px;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
-      padding: 2rem 2rem 2rem 2rem;
-      transition: all 0.2s ease;
+      border: 1px solid #cfdde6;
+      padding: 1.2rem 2rem;         /* giảm padding trên/dưới */
     }
 
-    /* tiêu đề chính – báo chí, chân phương nhưng có gu */
+    /* tiêu đề */
     .title-section {
       text-align: center;
-      border-bottom: 1px solid #e2e6ea;
-      padding-bottom: 1.2rem;
-      margin-bottom: 1.8rem;
+      border-bottom: 1px solid #cfdde6;
+      padding-bottom: 0.6rem;       /* thu hẹp */
+      margin-bottom: 1rem;
     }
 
     .title-section h2 {
-      font-size: 1.9rem;
-      font-weight: 600;
-      letter-spacing: -0.3px;
+      font-size: 2rem;
+      font-weight: 800;
       color: #1e3a4d;
-      margin-bottom: 0.5rem;
+      margin: 0;
       font-family: 'Georgia', 'Times New Roman', serif;
+      letter-spacing: -0.2px;
     }
 
-    .title-section .sub {
-      font-size: 0.9rem;
-      color: #6c7a89;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 400;
-    }
-
-    .desc {
-      font-size: 0.95rem;
-      color: #2c3e42;
-      text-align: center;
-      margin-bottom: 2rem;
-      background: #f8fafc;
-      padding: 0.8rem;
-      border-radius: 48px;
-      display: inline-block;
-      width: auto;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    /* nhóm input đẹp mắt */
+    /* nhóm input */
     .input-group {
-      margin-bottom: 1.8rem;
+      margin-bottom: 0.8rem;        /* nhỏ hơn */
     }
 
     .input-group label {
       display: block;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       font-weight: 600;
-      text-transform: uppercase;
+     
       letter-spacing: 0.5px;
       color: #2c5a6e;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
     }
 
     .input-group input {
       width: 100%;
-      padding: 0.9rem 1rem;
+      padding: 0.7rem 1rem;         /* nhỏ hơn chút */
       font-size: 1.2rem;
       font-family: 'Segoe UI', system-ui, monospace;
       border: 1px solid #cfdde6;
-      border-radius: 14px;
       background: #fff;
-      transition: 0.2s;
       color: #1f3b45;
       font-weight: 500;
+      border-radius: 0;
+      appearance: none;
+      -moz-appearance: textfield;
     }
 
     .input-group input:focus {
       outline: none;
-      border-color: #a1bfcf;
-      box-shadow: 0 0 0 3px rgba(55, 114, 130, 0.1);
+      border-color: #1e3a4d;
+      box-shadow: 0 0 0 2px rgba(30, 58, 77, 0.1);
     }
 
-    /* nút bấm – thanh lịch, không quá nổi */
+    /* nút bấm */
     .calculate-btn {
       width: 100%;
       background: #1e3a4d;
       color: white;
       border: none;
-      padding: 1rem;
-      font-size: 1.1rem;
+      padding: 0.7rem;              /* nhỏ bớt */
+      font-size: 1.05rem;
       font-weight: 600;
       font-family: 'Segoe UI', system-ui, sans-serif;
-      border-radius: 40px;
+      border-radius: 0;
       cursor: pointer;
-      transition: background 0.25s, transform 0.05s;
+      transition: background 0.2s;
       letter-spacing: 0.3px;
-      margin-top: 0.5rem;
+      margin-top: 0.2rem;           /* sát hơn */
     }
 
     .calculate-btn:hover {
       background: #0f2c3b;
     }
 
-    .calculate-btn:active {
-      transform: scale(0.98);
-    }
-
-    /* kết quả – điểm nhấn tinh tế */
-    .result-box {
-      margin-top: 2rem;
-      background: #fafcfd;
-      border-radius: 24px;
-      padding: 1.4rem 1.2rem;
+    /* Dòng kết quả */
+    .result-text {
       text-align: center;
-      border: 1px solid #e9edf2;
-    }
-
-    .result-number {
-      font-size: 2.6rem;
-      font-weight: 700;
+      font-size: 1.3rem;
+      font-weight: bold;
       color: #1e5a6e;
-      font-family: 'Georgia', monospace;
-      line-height: 1.2;
-      margin-bottom: 0.5rem;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      margin: 0.8rem 0 0.4rem;      /* gọn lại */
+      line-height: 1.4;
     }
 
-    .result-label {
-      font-size: 1rem;
-      color: #3b6e85;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 500;
-    }
-
-    .result-note {
-      margin-top: 0.8rem;
-      font-size: 0.85rem;
-      color: #7d8e9b;
-      border-top: 1px solid #e2e8f0;
-      padding-top: 0.8rem;
-    }
-
-    /* footnote – dành cho báo chí */
+    /* chân ghi chú */
     .footnote {
       text-align: center;
       font-size: 0.75rem;
       color: #8f9eb2;
-      margin-top: 1.2rem;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
+      margin-top: 0.5rem;           /* sát hơn, không còn đường kẻ */
     }
 
-    hr {
-      margin: 1rem 0;
-      border: none;
-      height: 1px;
-      background: linear-gradient(to right, #e0e6ed, transparent);
-    }
-
-    /* responsive */
     @media (max-width: 640px) {
       body {
         padding: 1rem;
       }
       .financial-card {
-        padding: 1.5rem;
+        padding: 1rem;
       }
       .title-section h2 {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
       }
-      .result-number {
-        font-size: 2rem;
+      .result-text {
+        font-size: 1.1rem;
       }
     }
   </style>
@@ -202,96 +140,71 @@
 
 <div class="financial-card">
   <div class="title-section">
-    <h2>Bao lâu có thể mua nhà?</h2>
-    <div class="sub">Công cụ ước tính tài chính cá nhân</div>
-  </div>
-
-  <div style="text-align: center;">
-    <div class="desc">
-      Dựa trên giá trị căn hộ trung bình tại đô thị lớn (TP. HCM / Hà Nội)
-    </div>
+    <h2>Bạn cần bao nhiêu năm để mua nhà?</h2>
   </div>
 
   <div class="input-group">
-    <label>Thu nhập mỗi tháng (VNĐ)</label>
-    <input type="number" id="monthlyIncome" placeholder="Ví dụ: 25.000.000" value="25000000">
+    <label>Nhập thu nhập mỗi tháng (VNĐ)</label>
+    <input type="text" id="monthlyIncome" placeholder="Ví dụ: 25.000.000" value="25000000" inputmode="numeric">
   </div>
 
   <button class="calculate-btn" id="calcBtn">Tính số năm cần thiết</button>
 
-  <div class="result-box" id="resultArea">
-    <div class="result-label">Thời gian dự kiến</div>
-    <div class="result-number" id="yearsDisplay">— năm</div>
-    <div class="result-note" id="extraNote">
-      Nhập thu nhập tháng và nhấn "Tính toán"
-    </div>
-  </div>
+  <!-- Dòng kết quả – thay cho ô result-box cũ -->
+  <p class="result-text" id="resultText">Bạn cần khoảng 13.3 năm để mua nhà.</p>
 
-  <hr />
+  <!-- Không còn đường kẻ ngang -->
   <div class="footnote">
-    * Giả định giá căn hộ phổ biến: <strong>4 tỷ đồng</strong> (diện tích ~60-75m² tại khu vực trung tâm mở rộng).<br>
-    Công thức: (giá nhà) / (thu nhập tháng × 12). Chưa bao gồm lãi suất, lạm phát hay tiết kiệm.
+    * Giả định giá 1 căn hộ trung bình tại trung tâm Tp.HCM là <strong>4 tỷ đồng</strong>.
   </div>
 </div>
 
 <script>
   (function() {
-    // giá căn hộ tham chiếu (4 tỷ VNĐ)
     const HOUSE_PRICE = 4000000000;
-
     const salaryInput = document.getElementById('monthlyIncome');
     const calcBtn = document.getElementById('calcBtn');
-    const yearsDisplaySpan = document.getElementById('yearsDisplay');
-    const extraNoteDiv = document.getElementById('extraNote');
+    const resultTextEl = document.getElementById('resultText');
 
-    // Hàm định dạng số kiểu báo chí: 25.000.000
-    function formatCurrency(value) {
-      return value.toLocaleString('vi-VN');
+    function parseSalary(str) {
+      const cleaned = str.replace(/[^0-9]/g, '');
+      const num = parseFloat(cleaned);
+      return isNaN(num) || num <= 0 ? null : num;
     }
 
-    function calculateAndRender() {
-      let rawSalary = salaryInput.value.trim();
-      // xóa dấu chấm hoặc khoảng trắng nếu người dùng copy kiểu "25.000.000"
-      let numericSalary = parseFloat(rawSalary.replace(/\./g, '').replace(/,/g, ''));
-      
-      if (isNaN(numericSalary) || numericSalary <= 0) {
-        yearsDisplaySpan.innerHTML = '— năm';
-        extraNoteDiv.innerHTML = 'Vui lòng nhập mức thu nhập hợp lệ (số dương).';
+    function updateResult() {
+      const salary = parseSalary(salaryInput.value);
+      if (!salary) {
+        resultTextEl.textContent = 'Vui lòng nhập thu nhập hợp lệ.';
         return;
       }
-
-      const yearIncome = numericSalary * 12;
+      const yearIncome = salary * 12;
       const yearsNeeded = HOUSE_PRICE / yearIncome;
-
-      if (yearsNeeded > 100) {
-        yearsDisplaySpan.innerHTML = `> 100 năm`;
-        extraNoteDiv.innerHTML = `Với thu nhập ${formatCurrency(numericSalary)}₫/tháng, rất khó để tích lũy đủ. Cân nhắc cải thiện thu nhập hoặc chọn căn hộ thấp hơn.`;
-      } else {
-        yearsDisplaySpan.innerHTML = `${yearsNeeded.toFixed(1)} năm`;
-        if (yearsNeeded <= 15) {
-          extraNoteDiv.innerHTML = `Thu nhập ${formatCurrency(numericSalary)}₫/tháng — khả thi. Có thể tiếp cận vay ngân hàng hợp lý.`;
-        } else if (yearsNeeded <= 30) {
-          extraNoteDiv.innerHTML = `Với mức thu nhập ${formatCurrency(numericSalary)}₫/tháng, cần lộ trình tài chính rõ ràng trong ${Math.ceil(yearsNeeded)} năm.`;
-        } else {
-          extraNoteDiv.innerHTML = `Thu nhập ${formatCurrency(numericSalary)}₫/tháng — nên xem xét gói vay dài hạn hoặc tích lũy cải thiện thu nhập.`;
-        }
-      }
+      let displayYear = yearsNeeded > 100 ? '> 100' : yearsNeeded.toFixed(1);
+      resultTextEl.textContent = `Bạn cần khoảng ${displayYear} năm để mua nhà.`;
     }
 
-    calcBtn.addEventListener('click', calculateAndRender);
-    
-    // cho phép nhấn phím Enter trong ô input
-    salaryInput.addEventListener('keypress', function(event) {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        calculateAndRender();
+    calcBtn.addEventListener('click', updateResult);
+    salaryInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        updateResult();
       }
     });
+    salaryInput.addEventListener('blur', updateResult);
 
-    // hiển thị kết quả mặc định ban đầu (với giá trị 25tr trong ô input)
-    calculateAndRender();
+    // Định dạng số tự động
+    salaryInput.addEventListener('input', function() {
+      const raw = salaryInput.value.replace(/[^0-9]/g, '');
+      if (raw === '') {
+        salaryInput.value = '';
+        return;
+      }
+      salaryInput.value = Number(raw).toLocaleString('vi-VN');
+    });
+
+    updateResult();
   })();
 </script>
-
 </body>
 </html>

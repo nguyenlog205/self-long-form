@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>Khảo sát an cư | E-Magazine Báo chí</title>
-  <style>
+<style>
     * {
       margin: 0;
       padding: 0;
@@ -12,10 +12,11 @@
     }
 
     body {
-      background: #f2efe7;
+      /* Nền tổng thể: xanh xám rất nhạt, gần như trắng sữa pha chút lam */
+      background: #eef0f5;
       font-family: 'Georgia', 'Times New Roman', 'Palatino', serif;
       padding: 2rem 1.5rem;
-      color: #2c2c2c;
+      color: #1e2b3c;
       line-height: 1.5;
     }
 
@@ -25,7 +26,7 @@
       margin: 0 auto;
       background: #ffffff;
       border-radius: 4px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.03);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 8px 24px rgba(21, 49, 98, 0.04);
       padding: 2.5rem;
     }
 
@@ -34,20 +35,24 @@
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      border-bottom: 2px solid #e2dfd7;
+      /* Đường kẻ ngang nhẹ nhàng, cùng họ xanh */
+      border-bottom: 2px solid #d3dae8;
       padding-bottom: 1rem;
       margin-bottom: 1.8rem;
       font-size: 0.8rem;
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: #6b6a66;
+      /* Chữ header chuyển sang xám xanh trầm */
+      color: #4a5a72;
     }
 
     .badge {
       font-weight: 600;
-      background: #eae7df;
+      /* Nền badge: xanh lam nhạt, gần gũi với #153162 */
+      background: #e1e7f2;
       padding: 0.2rem 0.7rem;
       font-size: 0.7rem;
+      color: #153162;
     }
 
     .total-votes {
@@ -61,9 +66,11 @@
       font-weight: 600;
       line-height: 1.25;
       margin-bottom: 2rem;
-      color: #2c3a2f;
+      /* Màu chữ tiêu đề dùng chính #153162 */
+      color: #153162;
       letter-spacing: -0.2px;
-      border-left: 4px solid #9bb0a1;
+      /* Đường viền trái đậm, làm điểm nhấn */
+      border-left: 4px solid #153162;
       padding-left: 1.2rem;
     }
 
@@ -73,8 +80,9 @@
     }
 
     .option-item {
-      border: 1px solid #e3dfd6;
-      background: #fefcf8;
+      /* Viền xanh xám nhạt */
+      border: 1px solid #d0d8ea;
+      background: #fdfdff;
       padding: 1.2rem 1.5rem;
       margin-bottom: 0.8rem;
       cursor: pointer;
@@ -85,8 +93,9 @@
     }
 
     .option-item:hover {
-      background: #faf8f2;
-      border-color: #cbc6bb;
+      /* Hover: nền xanh cực nhạt, viền đậm hơn */
+      background: #f4f6fc;
+      border-color: #b3bfd6;
     }
 
     .option-radio {
@@ -97,7 +106,8 @@
     .option-radio input {
       width: 1.1rem;
       height: 1.1rem;
-      accent-color: #6f7c6b;
+      /* Màu radio button chuyển sang xanh chủ đạo */
+      accent-color: #153162;
       cursor: pointer;
     }
 
@@ -105,13 +115,14 @@
       font-size: 1rem;
       line-height: 1.45;
       font-family: 'Palatino', 'Georgia', serif;
-      color: #2b2b28;
+      color: #1e2b3c;
       font-weight: 440;
     }
 
     /* Nút bấm */
     .vote-button {
-      background: #6f7c6b;
+      /* Nút màu xanh chủ đạo */
+      background: #153162;
       color: white;
       border: none;
       padding: 0.9rem 2rem;
@@ -127,17 +138,19 @@
     }
 
     .vote-button.active {
-      background: #3f4a3c;
+      /* Trạng thái active đậm hơn một chút */
+      background: #0e2347;
     }
 
     .vote-button:hover {
-      background: #4f5c4b;
+      /* Hover sáng hơn chút, cho cảm giác ấm */
+      background: #1d4278;
     }
 
     /* Khu vực kết quả */
     .result-area {
       margin-top: 2rem;
-      border-top: 1px solid #e9e5db;
+      border-top: 1px solid #dce2ef;
       padding-top: 1.5rem;
     }
 
@@ -157,7 +170,7 @@
 
     .result-label {
       font-family: 'Georgia', serif;
-      color: #3c3c37;
+      color: #2a3a51;
       max-width: 75%;
       line-height: 1.4;
     }
@@ -166,56 +179,59 @@
       font-family: 'Inter', monospace;
       font-size: 0.85rem;
       font-weight: 600;
-      background: #f0ede6;
+      /* Nền tag phần trăm: xanh nhạt nhã nhặn */
+      background: #e3e9f5;
       padding: 0.2rem 0.6rem;
       border-radius: 20px;
-      color: #5b5b53;
+      color: #153162;
     }
 
     .result-count {
       font-family: 'Inter', sans-serif;
       font-size: 0.85rem;
-      color: #7c7a72;
+      color: #5c6a80;
       white-space: nowrap;
     }
 
     .bar-wrapper {
       width: 100%;
       height: 4px;
-      background: #e6e2d9;
+      background: #e3e7f1;
       margin-top: 0.4rem;
     }
 
     .bar-fill {
       height: 100%;
-      background: #8a9a83;
+      /* Thanh tiến trình dùng chính màu chủ đạo */
+      background: #153162;
       width: 0%;
       transition: width 0.25s ease;
     }
 
     .highlight .bar-fill {
-      background: #5f6e59;
+      /* Tông đậm hơn cho lựa chọn nổi bật */
+      background: #0f2648;
     }
 
     .highlight .result-label {
       font-weight: 600;
-      color: #3f4a3c;
+      color: #153162;
     }
 
     .result-footnote {
       margin-top: 1.5rem;
       font-size: 0.7rem;
-      color: #9b988f;
+      color: #7c87a0;
       text-align: right;
       letter-spacing: 0.3px;
-      border-top: 1px solid #efebe2;
+      border-top: 1px solid #e4e8f3;
       padding-top: 1rem;
     }
 
-    /* Trạng thái */
+    /* Trạng thái phụ */
     .note-muted {
       font-size: 0.75rem;
-      color: #9b9a92;
+      color: #7b88a1;
       margin-top: 1rem;
       font-family: monospace;
     }
@@ -270,7 +286,7 @@
       <!-- Các option sẽ được tạo bằng JS để dễ quản lý hoặc có thể viết tay nhưng vẫn đồng bộ -->
     </div>
     <button class="vote-button" id="submitVoteBtn">GỬI BÌNH CHỌN</button>
-    <div class="note-muted">* Ngày bắt đầu khảo sát: 30/04/2025</div>
+    <div class="note-muted">* Ngày bắt đầu khảo sát: 2/5/2026</div>
   </div>
 
   <!-- Khu vực kết quả (ẩn ban đầu) -->
@@ -370,7 +386,7 @@
 
     resultsHtml += `
       <div class="result-footnote">
-        Thời gian khảo sát: từ 02/05 · Kết quả được cập nhật theo lượt bình chọn
+        Thời gian khảo sát: từ 2/5 · Kết quả được cập nhật theo lượt bình chọn
       </div>
     </div>`;
 
@@ -424,26 +440,26 @@
     // Làm đẹp: thêm hành động "Xem thống kê hiện tại" - nhưng vì không dùng icon và giữ gọn, 
     // Tôi sẽ tạo một nút phụ (text) để show kết quả mà không cần vote.
     // Nhưng để thuần như yêu cầu nâng cấp, tôi sẽ thêm một đoạn nhẹ "Xem kết quả sơ bộ" để tăng trải nghiệm báo chí.
-    const voteAreaDiv = document.getElementById("voteArea");
-    if (voteAreaDiv && !document.getElementById("viewResultBtn")) {
-      const viewBtn = document.createElement("button");
-      viewBtn.innerText = "Xem kết quả hiện tại";
-      viewBtn.style.background = "none";
-      viewBtn.style.border = "1px solid #cdc9be";
-      viewBtn.style.padding = "0.5rem 1rem";
-      viewBtn.style.fontSize = "0.75rem";
-      viewBtn.style.marginTop = "0.8rem";
-      viewBtn.style.cursor = "pointer";
-      viewBtn.style.fontFamily = "Inter, sans-serif";
-      viewBtn.style.color = "#6f6a60";
-      viewBtn.id = "viewResultBtn";
-      viewBtn.onclick = () => {
-        renderResults(null);
-        const voteSec = document.getElementById("voteArea");
-        if (voteSec) voteSec.style.display = "none";
-      };
-      voteAreaDiv.appendChild(viewBtn);
-    }
+    // const voteAreaDiv = document.getElementById("voteArea");
+    // if (voteAreaDiv && !document.getElementById("viewResultBtn")) {
+    //   const viewBtn = document.createElement("button");
+    //   viewBtn.innerText = "Xem kết quả hiện tại";
+    //   viewBtn.style.background = "none";
+    //   viewBtn.style.border = "1px solid #cdc9be";
+    //   viewBtn.style.padding = "0.5rem 1rem";
+    //   viewBtn.style.fontSize = "0.75rem";
+    //   viewBtn.style.marginTop = "0.8rem";
+    //   viewBtn.style.cursor = "pointer";
+    //   viewBtn.style.fontFamily = "Inter, sans-serif";
+    //   viewBtn.style.color = "#6f6a60";
+    //   viewBtn.id = "viewResultBtn";
+    //   viewBtn.onclick = () => {
+    //     renderResults(null);
+    //     const voteSec = document.getElementById("voteArea");
+    //     if (voteSec) voteSec.style.display = "none";
+    //   };
+    //   voteAreaDiv.appendChild(viewBtn);
+    // }
   }
 
   // Khởi chạy
